@@ -27,6 +27,8 @@ Route::post('store', [MerchController::class, 'store'])->name('merch.store');
 Route::get('edit/{id}', [MerchController::class, 'edit'])->name('merch.edit'); 
 Route::post('update/{id}', [MerchController::class,  'update'])->name('merch.update');
 Route::post('delete/{id}', [MerchController::class,  'delete'])->name('merch.delete');
+Route::post('softdelete/{id}', [MerchController::class,  'softDelete'])->name('merch.softDelete');
+Route::get('restore', [MerchController::class,  'restore'])->name('merch.restore');
 
 Route::get('produsen/add', [ProdusenController::class, 'create'])->name('produsen.create');
 Route::post('produsen/store', [ProdusenController::class, 'store'])->name('produsen.store');

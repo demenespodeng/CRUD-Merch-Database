@@ -17,7 +17,7 @@
 
             <h5 class="card-title fw-bolder mb-3">Tambah Barang</h5>
 
-            <form method="post" action="{{ route('produsen.store') }}">
+            <form method="post" action="{{ route('warehouse.store') }}">
                 @csrf
                 <div class="mb-3">
                     <label for="id_warehouse" class="form-label">ID Warehouse</label>

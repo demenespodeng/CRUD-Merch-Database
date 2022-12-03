@@ -90,9 +90,9 @@ class WarehouseController extends Controller
         return redirect()->route('merch.index')->with('success', 'Data warehouse berhasil diubah');
     }
 
-    public function delete($id) {
+    public function delete($id_warehouse) {
         // Menggunakan Query Builder Laravel dan Named Bindings untuk valuesnya
-        DB::delete('DELETE FROM warehouse WHERE id_warehouse = :id_warehouse', ['id_warehouse' => $id]);
+        DB::delete('DELETE FROM warehouse WHERE id_warehouse = :id_warehouse', ['id_warehouse' => $id_warehouse]);
 
         // Menggunakan laravel eloquent
         // Ikan::where('id_ikan', $id)->delete();

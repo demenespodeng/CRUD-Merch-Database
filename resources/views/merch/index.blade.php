@@ -13,6 +13,7 @@
 <h4 class="mt-5">Data merch</h4>
 
 <a href="{{ route('merch.create') }}" type="button" class="btn btn-success rounded-3">Tambah Data</a>
+<a href="{{ route('merch.restore') }}" type="button" class="btn btn-success rounded-3">Restore Data</a>
 
 @if($message = Session::get('success'))
     <div class="alert alert-success mt-3" role="alert">
@@ -64,6 +65,30 @@
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                         <button type="submit" class="btn btn-primary">Ya</button>
                                     </div>
+                                </form> 
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#softhapusModal{{ $data->id_merch }}">
+                        Yawarakai desu
+                    </button>
+                    
+                    <div class="modal fade" id="softhapusModal{{ $data->id_merch }}" tabindex="-1" aria-labelledby="softhapusModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="softhapusModalLabel">Konfirmasi</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form method="POST" action="{{ route('merch.softDelete', $data->id_merch) }}">
+                                    @csrf
+                                    <div class="modal-body">
+                                        Apakah anda yakin ingin menghapus {{ $data->nama_merch}} ini?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                        <button type="submit" class="btn btn-primary">Ya</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -101,12 +126,12 @@
                     <a href="{{ route('produsen.edit', $produsen->id_produsen) }}" type="button" class="btn btn-warning rounded-3">Ubah</a>
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapusModal{{ $produsen->id_produsen }}">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapusModal2{{ $produsen->id_produsen }}">
                         Hapus
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="hapusModal{{ $produsen->id_produsen }}" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="hapusModal2{{ $produsen->id_produsen }}" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -157,12 +182,12 @@
                     <a href="{{ route('warehouse.edit', $warehouse->id_warehouse) }}" type="button" class="btn btn-warning rounded-3">Ubah</a>
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapusModal{{ $warehouse->id_warehouse }}">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapusModal3{{ $warehouse->id_warehouse }}">
                         Hapus
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="hapusModal{{ $warehouse->id_warehouse }}" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="hapusModal3{{ $warehouse->id_warehouse }}" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -172,7 +197,7 @@
                                 <form method="POST" action="{{ route('warehouse.delete', $warehouse->id_warehouse) }}">
                                     @csrf
                                     <div class="modal-body">
-                                        Apakah anda yakin ingin menghapus {{ $warehouse->id_warehouse}} ini?
+                                        Apakah anda yakin ingin menghapus id {{ $warehouse->id_warehouse}} ini?
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -194,6 +219,7 @@
       <tr>
         <th>Nama Merch</th>
         <th>Keyword</th>
+        <th>Harga Merch</th>
         <th>Nama Produsen</th>
         <th>Domisili</th>
       </tr>
@@ -203,6 +229,7 @@
         <tr>
             <td>{{ $join->nama_merch }}</td>
             <td>{{ $join->keyword }}</td>
+            <td>{{ $join->harga_merch }}</td>
             <td>{{ $join->nama_produsen }}</td>
             <td>{{ $join->domisili }}</td>
     @endforeach
@@ -215,6 +242,7 @@
       <tr>
         <th>Nama Merch</th>
         <th>Keyword</th>
+        <th>Harga Merch</th>
         <th>Stok Merch</th>
       </tr>
     </thead>
@@ -223,6 +251,7 @@
         <tr>
             <td>{{ $join2->nama_merch }}</td>
             <td>{{ $join2->keyword }}</td>
+            <td>{{ $join->harga_merch }}</td>
             <td>{{ $join2->stok_merch }}</td>
     @endforeach
 </tbody>

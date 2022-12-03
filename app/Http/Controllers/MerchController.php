@@ -24,7 +24,7 @@ class MerchController extends Controller
                 ->orWhere('keyword', 'like', "%$katakunci%")
                 ->paginate(5);
         } else {
-            $datas = DB::select('select * from merch');
+            $datas = DB::select('select * from merch where is_deleted=0');
         }
         if (strlen($katakunci)) {
             $Produsen = DB::table('produsen')
@@ -44,11 +44,13 @@ class MerchController extends Controller
         }
         $joins = DB::table('produsen')
             ->join('merch', 'merch.id_merch', '=', 'produsen.id_merch')
-            ->select('produsen.*', 'merch.nama_merch','merch.keyword')
+            ->select('produsen.*', 'merch.nama_merch','merch.keyword', 'merch.harga_merch')
+            ->where('merch.is_deleted', '0')
             ->get();
         $joins2 = DB::table('warehouse')
             ->join('merch', 'merch.id_merch', '=', 'warehouse.id_merch')
-            ->select('warehouse.*', 'merch.nama_merch','merch.keyword')
+            ->select('warehouse.*', 'merch.nama_merch','merch.keyword', 'merch.harga_merch')
+            ->where('merch.is_deleted', '0')
             ->get();
         return view('merch.index')
             ->with('datas', $datas)
@@ -112,6 +114,22 @@ class MerchController extends Controller
     public function delete($id) {
         DB::delete('DELETE FROM merch WHERE id_merch = :id_merch', ['id_merch' => $id]);
         return redirect()->route('merch.index')->with('success', 'Data merch berhasil dihapus');
+    }
+
+    public function softDelete($id)
+    {
+        // Menggunakan Query Builder Laravel dan Named Bindings untuk valuesnya
+        DB::update('UPDATE merch SET is_deleted = 1
+        WHERE id_merch = :id_merch', ['id_merch' => $id]);
+        return redirect()->route('merch.index')->with('success', 'Data Merch berhasil dihapus');
+    }
+
+    public function restore()
+    {
+        // Menggunakan Query Builder Laravel dan Named Bindings untuk valuesnya
+        DB::table('merch')
+        ->update(['is_deleted' => 0]);
+        return redirect()->route('merch.index')->with('success', 'Data Merch berhasil direstore');
     }
 
 }
