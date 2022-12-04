@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#softhapusModal{{ $data->id_merch }}">
-                        Yawarakai desu
+                        Hapus tapi yang halus
                     </button>
                     
                     <div class="modal fade" id="softhapusModal{{ $data->id_merch }}" tabindex="-1" aria-labelledby="softhapusModalLabel" aria-hidden="true">
@@ -213,7 +213,7 @@
     </tbody>
 </table>
 
-<h4 class="mt-5">Join Merch dan Produsen</h4>
+<h4 class="mt-5">Tabel List Produsen</h4>
 <table class="table table-hover mt-2">
     <thead>
       <tr>
@@ -236,7 +236,7 @@
 </tbody>
 </table>
 
-<h4 class="mt-5">Join Merch dan Warehouse</h4>
+<h4 class="mt-5">Tabel data stok</h4>
 <table class="table table-hover mt-2">
     <thead>
       <tr>

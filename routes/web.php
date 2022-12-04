@@ -18,6 +18,7 @@ use App\Http\Controllers\WarehouseController;
 |
 */
 
+Auth::routes();
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/', [MerchController::class, 'index'])->name('merch.index');
 });
@@ -42,7 +43,6 @@ Route::get('warehouse/edit/{id}', [WarehouseController::class, 'edit'])->name('w
 Route::post('warehouse/update/{id}', [WarehouseController::class, 'update'])->name('warehouse.update');
 Route::post('warehouse/delete/{id}', [WarehouseController::class, 'delete'])->name('warehouse.delete');
 
-Auth::routes();
-// Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
