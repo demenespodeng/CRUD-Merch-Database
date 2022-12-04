@@ -30,7 +30,7 @@ class MerchController extends Controller
             $Produsen = DB::table('produsen')
                 ->where('nama_produsen', 'like', "%$katakunci%")
                 ->orWhere('domisili', 'like', "%$katakunci%")
-                ->paginate(3);
+                ->paginate(5);
         } else {
             $Produsen = DB::select('select * from produsen');
         }
@@ -38,7 +38,7 @@ class MerchController extends Controller
             $Warehouse = DB::table('warehouse')
                 ->where('id_warehouse', 'like', "%$katakunci%")
                 ->orWhere('stok_merch', 'like', "%$katakunci%")
-                ->paginate(3);
+                ->paginate(5);
         } else {
             $Warehouse = DB::select('select * from warehouse');
         }
@@ -52,12 +52,26 @@ class MerchController extends Controller
             ->select('warehouse.*', 'merch.nama_merch','merch.keyword', 'merch.harga_merch')
             ->where('merch.is_deleted', '0')
             ->get();
+        $joins3 = DB::table('merch')
+            ->join('produsen', 'merch.id_merch', '=', 'produsen.id_merch')
+            ->join('warehouse','merch.id_merch','=','warehouse.id_merch')
+            ->select('produsen.*', 'warehouse.*', 'merch.nama_merch','merch.keyword', 'merch.harga_merch')
+            ->where('merch.is_deleted', '0')
+            ->get();
+        //  $register = DB::table('registrations')
+        //     ->join('questions', 'registrations.registration_id', '=', 'questions.question_id')
+        //     ->join('ssi_tracks','registrations.registration_id','=','ssi_tracks.registration_id')
+        //     ->select('address', 'model', 'chassis', 'delivery_date','ssi_tracks.track_first_status')
+        //     ->where([["questions.question_schedul", "=", $dropselected] and ['ssi_tracks.track_first_status',0]])
+        //     ->get();
+
         return view('merch.index')
             ->with('datas', $datas)
             ->with('Produsen', $Produsen)
             ->with('Warehouse', $Warehouse)
             ->with('joins',$joins)
-            ->with('joins2',$joins2);
+            ->with('joins2',$joins2)
+            ->with('joins3',$joins3);
     }
 
     public function create() {

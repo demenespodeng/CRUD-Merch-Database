@@ -251,8 +251,33 @@
         <tr>
             <td>{{ $join2->nama_merch }}</td>
             <td>{{ $join2->keyword }}</td>
-            <td>{{ $join->harga_merch }}</td>
+            <td>{{ $join2->harga_merch }}</td>
             <td>{{ $join2->stok_merch }}</td>
+    @endforeach
+</tbody>
+</table>
+
+<h4 class="mt-5">Tabel Semuanya</h4>
+<table class="table table-hover mt-2">
+    <thead>
+      <tr>
+        <th>Nama Merch</th>
+        <th>Keyword</th>
+        <th>Harga Merch</th>
+        <th>Nama Produsen</th>
+        <th>Domisili</th>
+        <th>Stok Merch</th>
+      </tr>
+    </thead>
+<tbody>
+    @foreach ($joins3 as $join3)
+        <tr>
+            <td>{{ $join3->nama_merch }}</td>
+            <td>{{ $join3->keyword }}</td>
+            <td>{{ $join3->harga_merch }}</td>
+            <td>{{ $join3->nama_produsen }}</td>
+            <td>{{ $join3->domisili }}</td>
+            <td>{{ $join3->stok_merch }}</td>
     @endforeach
 </tbody>
 </table>
