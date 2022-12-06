@@ -10,16 +10,35 @@ use Illuminate\Support\Facades\Hash;
 
 class ProdusenController extends Controller
 {
-    public function index() {
-        $datas = DB::select('select * from produsen');
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
-        return view('merch.index')
-            ->with('datas', $datas);
+    public function index(Request $request) {
+        $katakunci = $request->katakunci;
+        if (strlen($katakunci)) {
+            $datas = DB::table('produsen')
+                ->where('nama_produsen', 'like', "%$katakunci%")
+                ->orWhere('domisili', 'like', "%$katakunci%")
+                ->paginate(5);
+        } else {
+            $datas = DB::select('select * from produsen');
+        }
+        
+        $joins = DB::table('produsen')
+            ->join('merch', 'merch.id_merch', '=', 'produsen.id_merch')
+            ->select('produsen.*', 'merch.nama_merch','merch.keyword', 'merch.harga_merch')
+            ->where('merch.is_deleted', '0')
+            ->get();
+
+        return view('produsen.index')
+            ->with('datas', $datas)
+            ->with('joins', $joins);
     }
 
     public function create() {
-        $merch = Merch::all();
-        return view('produsen.add',compact('merch'));
+        return view('produsen.add');
     }
 
     public function store(Request $request) {
@@ -51,13 +70,12 @@ class ProdusenController extends Controller
         //     'jenis_kelamin' => Hash::make($request->jenis_kelamin),
         // ]);
 
-        return redirect()->route('merch.index')->with('success', 'Data produsen berhasil disimpan');
+        return redirect()->route('produsen.index')->with('success', 'Data produsen berhasil disimpan');
     }
 
     public function edit($id) {
         $data = DB::table('produsen')->where('id_produsen', $id)->first();
-        $merch = Merch::all();
-        return view('produsen.edit')->with('data', $data,compact('merch'));
+        return view('produsen.edit')->with('data', $data);
     }
 
     public function update($id, Request $request) {
@@ -90,7 +108,7 @@ class ProdusenController extends Controller
         //     'jenis_kelamin' => Hash::make($request->jenis_kelamin),
         // ]);
 
-        return redirect()->route('merch.index')->with('success', 'Data produsen berhasil diubah');
+        return redirect()->route('produsen.index')->with('success', 'Data produsen berhasil diubah');
     }
 
     public function delete($id_produsen) {
@@ -100,6 +118,7 @@ class ProdusenController extends Controller
         // Menggunakan laravel eloquent
         // Ikan::where('id_produsen', $id)->delete();
 
-        return redirect()->route('merch.index')->with('success', 'Data produsen berhasil dihapus');
+        return redirect()->route('produsen.index')->with('success', 'Data produsen berhasil dihapus');
     }
+    
 }

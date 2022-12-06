@@ -31,12 +31,14 @@ Route::post('delete/{id}', [MerchController::class,  'delete'])->name('merch.del
 Route::post('softdelete/{id}', [MerchController::class,  'softDelete'])->name('merch.softDelete');
 Route::get('restore', [MerchController::class,  'restore'])->name('merch.restore');
 
+Route::get('/produsen', [ProdusenController::class, 'index'])->name('produsen.index');
 Route::get('produsen/add', [ProdusenController::class, 'create'])->name('produsen.create');
 Route::post('produsen/store', [ProdusenController::class, 'store'])->name('produsen.store');
 Route::get('produsen/edit/{id}', [ProdusenController::class, 'edit'])->name('produsen.edit');
 Route::post('produsen/update/{id}', [ProdusenController::class, 'update'])->name('produsen.update');
 Route::post('produsen/delete/{id}', [ProdusenController::class, 'delete'])->name('produsen.delete');
 
+Route::get('/warehouse', [WarehouseController::class, 'index'])->name('warehouse.index');
 Route::get('warehouse/add', [WarehouseController::class, 'create'])->name('warehouse.create');
 Route::post('warehouse/store', [WarehouseController::class, 'store'])->name('warehouse.store');
 Route::get('warehouse/edit/{id}', [WarehouseController::class, 'edit'])->name('warehouse.edit');

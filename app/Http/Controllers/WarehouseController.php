@@ -10,16 +10,36 @@ use Illuminate\Support\Facades\Hash;
 
 class WarehouseController extends Controller
 {
-    public function index() {
-        $datas = DB::select('select * from warehouse');
 
-        return view('merch.index')
-            ->with('datas', $datas);
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    public function index(Request $request) {
+        $katakunci = $request->katakunci;
+        if (strlen($katakunci)) {
+            $datas = DB::table('warehouse')
+                ->where('id_warehouse', 'like', "%$katakunci%")
+                ->orWhere('id_merch', 'like', "%$katakunci%")
+                ->paginate(5);
+        } else {
+            $datas = DB::select('select * from warehouse');
+        }
+
+        $joins = DB::table('warehouse')
+            ->join('merch', 'merch.id_merch', '=', 'warehouse.id_merch')
+            ->select('warehouse.*', 'merch.nama_merch','merch.keyword', 'merch.harga_merch')
+            ->where('merch.is_deleted', '0')
+            ->get();
+
+        return view('warehouse.index')
+            ->with('datas', $datas)
+            ->with('joins', $joins);
     }
 
     public function create() {
-        $merch = Merch::all();
-        return view('warehouse.add',compact('merch'));
+        return view('warehouse.add');
     }
 
     public function store(Request $request) {
@@ -49,13 +69,12 @@ class WarehouseController extends Controller
         //     'jenis_kelamin' => Hash::make($request->jenis_kelamin),
         // ]);
 
-        return redirect()->route('merch.index')->with('success', 'Data warehouse berhasil disimpan');
+        return redirect()->route('warehouse.index')->with('success', 'Data warehouse berhasil disimpan');
     }
 
     public function edit($id) {
         $data = DB::table('warehouse')->where('id_warehouse', $id)->first();
-        $merch = Merch::all();
-        return view('warehouse.edit')->with('data', $data,compact('merch'));
+        return view('warehouse.edit')->with('data', $data);
     }
 
     public function update($id, Request $request) {
@@ -87,7 +106,7 @@ class WarehouseController extends Controller
         //     'jenis_kelamin' => Hash::make($request->jenis_kelamin),
         // ]);
 
-        return redirect()->route('merch.index')->with('success', 'Data warehouse berhasil diubah');
+        return redirect()->route('warehouse.index')->with('success', 'Data warehouse berhasil diubah');
     }
 
     public function delete($id_warehouse) {
@@ -97,6 +116,6 @@ class WarehouseController extends Controller
         // Menggunakan laravel eloquent
         // Ikan::where('id_ikan', $id)->delete();
 
-        return redirect()->route('merch.index')->with('success', 'Data warehouse berhasil dihapus');
+        return redirect()->route('warehouse.index')->with('success', 'Data warehouse berhasil dihapus');
     }
 }
